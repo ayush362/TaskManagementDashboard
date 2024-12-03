@@ -10,45 +10,64 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
     const dispatch = useDispatch();
 
     const [filter, setFilter] = useState("all"); // Track current filter
+    const [searchQuery, setSearchQuery] = useState(""); // Track search input
 
     // Get current date for overdue tasks
     const currentDate = new Date().toISOString().split("T")[0];
 
     // Filter logic
     const filteredTodos = todos.filter((todo) => {
-        switch (filter) {
-            case "completed":
-                return todo.completed;
-            case "pending":
-                return !todo.completed;
-            case "overdue":
-                return (
-                    todo.dueDate &&
-                    todo.dueDate < currentDate &&
-                    !todo.completed
-                );
-            default:
-                return true; // 'all' tasks
-        }
+        const matchesFilter = (() => {
+            switch (filter) {
+                case "completed":
+                    return todo.completed;
+                case "pending":
+                    return !todo.completed;
+                case "overdue":
+                    return (
+                        todo.dueDate &&
+                        todo.dueDate < currentDate &&
+                        !todo.completed
+                    );
+                default:
+                    return true; // 'all' tasks
+            }
+        })();
+        const matchesSearch = todo.todo
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase());
+        return matchesFilter && matchesSearch;
     });
 
     return (
         <div className="max-w-lg mx-auto my-10">
-            {/* Filter Buttons */}
-            <div className="flex justify-between items-center mb-6 bg-gray-50 p-4 rounded-lg shadow">
-                {["all", "completed", "pending", "overdue"].map((type) => (
-                    <button
-                        key={type}
-                        onClick={() => setFilter(type)}
-                        className={`px-4 py-2 font-medium rounded-md transition ${
-                            filter === type
-                                ? "bg-blue-500 text-white shadow-md"
-                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                    >
-                        {type.charAt(0).toUpperCase() + type.slice(1)} Tasks
-                    </button>
-                ))}
+            {/* Search and Filter */}
+            <div className="flex flex-col space-y-4 mb-6">
+                {/* Search Bar */}
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search tasks..."
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {/* Filter Buttons */}
+                <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow">
+                    {["all", "completed", "pending", "overdue"].map((type) => (
+                        <button
+                            key={type}
+                            onClick={() => setFilter(type)}
+                            className={`px-4 py-2 font-medium rounded-md transition ${
+                                filter === type
+                                    ? "bg-blue-500 text-white shadow-md"
+                                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            }`}
+                        >
+                            {type.charAt(0).toUpperCase() + type.slice(1)} Tasks
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* Render Filtered Todos */}
