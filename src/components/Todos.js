@@ -24,7 +24,7 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
             case "overdue":
                 return (
                     todo.dueDate &&
-                    todo.dueDate > currentDate &&
+                    todo.dueDate < currentDate &&
                     !todo.completed
                 );
             default:
