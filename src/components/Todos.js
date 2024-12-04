@@ -49,18 +49,18 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search tasks..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#d9a1ae] bg-gray-50"
                 />
 
                 {/* Filter Buttons */}
-                <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow">
+                <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow">
                     {["all", "completed", "pending", "overdue"].map((type) => (
                         <button
                             key={type}
                             onClick={() => setFilter(type)}
-                            className={`px-4 py-2 font-medium rounded-md transition ${
+                            className={`px-4 py-2 font-medium rounded-full transition ${
                                 filter === type
-                                    ? "bg-blue-500 text-white shadow-md"
+                                    ? "bg-[#d9a1ae] text-white shadow-md"
                                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                             }`}
                         >
@@ -75,14 +75,14 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
                 {filteredTodos.map((todo) => (
                     <div
                         key={todo.id}
-                        className="flex items-center justify-between bg-white shadow-lg rounded-lg p-5 hover:shadow-xl transition"
+                        className="flex items-center justify-between bg-gray-100 shadow-lg rounded-lg p-5 hover:shadow-xl transition"
                     >
                         <div className="flex items-center space-x-4">
                             {editFormVisibility === false && (
                                 <input
                                     type="checkbox"
                                     checked={todo.completed}
-                                    className="w-5 h-5 text-blue-500 border-gray-300 rounded focus:ring-blue-400"
+                                    className="w-5 h-5 text-[#d9a1ae] border-gray-300 rounded focus:ring-[#d9a1ae]"
                                     onChange={() =>
                                         dispatch(handleCheckbox(todo.id))
                                     }
@@ -106,7 +106,7 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
                         <div className="flex items-center space-x-4">
                             {editFormVisibility === false && (
                                 <>
-                                    <button className="text-blue-500 hover:text-blue-700 focus:outline-none">
+                                    <button className="text-[#d9a1ae] hover:text-pink-700 focus:outline-none">
                                         <Icon
                                             onClick={() =>
                                                 handleEditClick(todo)
