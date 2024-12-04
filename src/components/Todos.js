@@ -14,8 +14,13 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
 
     // Get current date for overdue tasks
     const currentDate = new Date().toISOString().split("T")[0];
-
-    // Filter logic
+    const handleDelete = (todo) => {
+        const isConfirmed = window.confirm(`Are you sure you want to delete the todo: "${todo.todo}"?`);
+        if (isConfirmed) {
+            dispatch(removeTodo(todo.id));
+        }
+    };
+        // Filter logic
     const filteredTodos = todos.filter((todo) => {
         const matchesFilter = (() => {
             switch (filter) {
@@ -117,9 +122,7 @@ const Todos = ({ handleEditClick, editFormVisibility }) => {
                                     </button>
                                     <button className="text-red-500 hover:text-red-700 focus:outline-none">
                                         <Icon
-                                            onClick={() =>
-                                                dispatch(removeTodo(todo.id))
-                                            }
+                                            onClick={() => handleDelete(todo)}
                                             icon={trash}
                                             className="w-5 h-5"
                                         />
